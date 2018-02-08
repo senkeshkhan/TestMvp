@@ -205,6 +205,7 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
                     k = i + 1;
                     if (array[i] > array[k]) {
                         swapNumbers(i, k, array);
+                        System.out.println("444444444444444");
                     }
                 }
                 printNumbers(array);
