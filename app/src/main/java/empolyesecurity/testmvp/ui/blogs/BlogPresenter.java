@@ -20,11 +20,14 @@ import android.util.Log;
 import com.androidnetworking.error.ANError;
 import com.google.gson.Gson;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 
 import empolyesecurity.testmvp.data.network.APIService;
 import empolyesecurity.testmvp.data.DataManager;
+import empolyesecurity.testmvp.data.network.model.Blog;
 import empolyesecurity.testmvp.data.network.model.BlogResponse;
 import empolyesecurity.testmvp.ui.base.BasePresenter;
 import empolyesecurity.testmvp.utils.rx.SchedulerProvider;
@@ -73,7 +76,26 @@ public class BlogPresenter<V extends BlogMvpView> extends BasePresenter<V>
                         Log.e("Success", new Gson().toJson(blogResponse.getData()));
                         // System.out.println("rrrrrrrrrrrrrrrrrr"+blogResponse.getData());
                         if (blogResponse != null && blogResponse.getData() != null) {
+
+                            BlogActivity.blogDao.deleteAll();
                             getMvpView().updateBlog(blogResponse.getData());
+
+
+                            //BlogActivity.blogDao.deleteInTx(blogResponse.getData());
+
+                            BlogActivity.blogDao.insertOrReplaceInTx(blogResponse.getData());
+                           getDataManager().insertBlog(blogResponse.getData());
+
+
+
+
+
+
+                            Log.e("wwwwwwwwwwww", new Gson().toJson(BlogActivity.blogDao.loadAll()));
+
+
+
+
                         }
                         getMvpView().hideLoading();
                     }
@@ -176,4 +198,31 @@ public class BlogPresenter<V extends BlogMvpView> extends BasePresenter<V>
 
 
     }
+
+
+
+    @Override
+    public void onBlogDb() {
+        getCompositeDisposable().add(getDataManager()
+                .getAllBlog()
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Consumer<List<Blog>>() {
+                    @Override
+                    public void accept(List<Blog> questionList) throws Exception {
+
+
+
+
+                        if (!isViewAttached()) {
+                            return;
+                        }
+
+                        if (questionList != null) {
+                            getMvpView().blogDp(questionList);
+                        }
+                    }
+                }));
+    }
+
 }

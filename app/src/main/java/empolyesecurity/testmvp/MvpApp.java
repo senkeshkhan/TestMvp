@@ -17,6 +17,9 @@ package empolyesecurity.testmvp;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.Toast;
 
 
 import com.androidnetworking.AndroidNetworking;
@@ -26,6 +29,8 @@ import javax.inject.Inject;
 
 
 import empolyesecurity.testmvp.data.DataManager;
+import empolyesecurity.testmvp.data.dp.model.DaoMaster;
+import empolyesecurity.testmvp.data.dp.model.DaoSession;
 import empolyesecurity.testmvp.data.network.ApiHelper;
 import empolyesecurity.testmvp.di.component.ApplicationComponent;
 
@@ -47,7 +52,7 @@ public class MvpApp extends Application {
 
     @Inject
     CalligraphyConfig mCalligraphyConfig;
-
+    private DaoSession mDaoSession;
   /*  @Inject
     ApiHelper mApiHelper;*/
     private ApplicationComponent mApplicationComponent;
@@ -57,7 +62,8 @@ public class MvpApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        mDaoSession = new DaoMaster(
+                new DaoMaster.DevOpenHelper(this, "greendao_demo.db").getWritableDb()).newSession();
         mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this)).build();
 
@@ -82,4 +88,29 @@ public class MvpApp extends Application {
     public void setComponent(ApplicationComponent applicationComponent) {
         mApplicationComponent = applicationComponent;
     }
+
+
+    public static boolean checkConnection(Context context) {
+        final ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetworkInfo = connMgr.getActiveNetworkInfo();
+
+        if (activeNetworkInfo != null) { // connected to the internet
+            Toast.makeText(context, activeNetworkInfo.getTypeName(), Toast.LENGTH_SHORT).show();
+
+            if (activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                // connected to wifi
+                return true;
+            } else if (activeNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                // connected to the mobile provider's data plan
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public DaoSession getDaoSession() {
+        return mDaoSession;
+    }
+
 }

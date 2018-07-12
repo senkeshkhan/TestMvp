@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import dagger.Module;
 import dagger.Provides;
+import empolyesecurity.testmvp.data.network.model.Blog;
 import empolyesecurity.testmvp.data.network.model.BlogResponse;
 import empolyesecurity.testmvp.di.ActivityContext;
 import empolyesecurity.testmvp.di.PerActivity;
@@ -139,7 +140,7 @@ public class ActivityModule {
     }*/
     @Provides
     BlogAdapter provideBlogAdapter() {
-        return new BlogAdapter(new ArrayList<BlogResponse.Blog>());
+        return new BlogAdapter(new ArrayList<Blog>());
     }
  /* @Provides
   BlogMvpPresenter<BlogMvpView> provideBlogMvpPresenter(

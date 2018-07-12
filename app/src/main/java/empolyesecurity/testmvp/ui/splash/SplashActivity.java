@@ -7,6 +7,9 @@ import android.os.Handler;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -37,9 +40,67 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
         mPresenter.onAttach(SplashActivity.this);
         BubbleSort ob = new BubbleSort();
         int arr[] = {64, 34, 25, 12, 22, 11, 90};
+        int a =arr[0];
+        int b =arr[0];
+
         ob. bubble_srt(arr);
         System.out.println("Sorted array");
         //ob.printArray(arr);
+
+        String va="malayam";
+
+        String hh = new StringBuffer(va).reverse().toString();
+
+
+        if(va.equals(hh)){
+            System.out.println("poly");
+        }else{
+            System.out.println("notpoly");
+        }
+        char[] chr =va.toCharArray();
+
+        Map<Character,Integer> map = new HashMap<>();
+
+
+        for(Character ch :chr){
+
+            if(map.containsKey(ch)){
+                map.put(ch,map.get(ch)+1);
+            }else{
+                map.put(ch,1);
+            }
+        }
+
+        Set<Character> keys =map.keySet();
+
+
+        for(Character ch : keys){
+
+            if(map.get(ch)>1){
+                System.out.println("iiiiii"+ch +" "+map.get(ch));
+            }
+
+        }
+
+
+       /* for(int i =0;i<arr.length;i++){
+
+            if(arr[i] >a){
+                b=a;
+                a=arr[i];
+
+            }else if(arr[i]>b){
+                b=arr[i];
+            }
+        }
+*/
+
+        pramidOB(5);
+
+        System.out.println("yyyyyyyyyyyyyy"+a+b);
+
+
+
     }
 
 
@@ -241,4 +302,28 @@ public class SplashActivity extends BaseActivity implements SplashMvpView {
         }
 
     }
+
+
+    public void pramidOB(int val){
+
+        int k =val;
+
+        for(int i=0;i<val;i++){
+
+            for(int j=0;j<k;j++){
+
+                System.out.print(" ");
+            }
+            k = k -1;
+            for(int j=0;j<=i;j++){
+
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+
+
+    }
+
+
 }

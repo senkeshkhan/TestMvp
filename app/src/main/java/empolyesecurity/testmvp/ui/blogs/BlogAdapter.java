@@ -33,6 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import empolyesecurity.testmvp.R;
+import empolyesecurity.testmvp.data.network.model.Blog;
 import empolyesecurity.testmvp.data.network.model.BlogResponse;
 import empolyesecurity.testmvp.ui.base.BaseViewHolder;
 import empolyesecurity.testmvp.utils.AppLogger;
@@ -48,9 +49,9 @@ public class BlogAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public static final int VIEW_TYPE_NORMAL = 1;
 
     private Callback mCallback;
-    private List<BlogResponse.Blog> mBlogResponseList;
+    private List<Blog> mBlogResponseList;
 
-    public BlogAdapter(List<BlogResponse.Blog> blogResponseList) {
+    public BlogAdapter(List<Blog> blogResponseList) {
         mBlogResponseList = blogResponseList;
     }
 
@@ -95,7 +96,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public void addItems(List<BlogResponse.Blog> blogList) {
+    public void addItems(List<Blog> blogList) {
         mBlogResponseList.addAll(blogList);
         notifyDataSetChanged();
     }
@@ -135,7 +136,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             super.onBind(position);
 
-            final BlogResponse.Blog blog = mBlogResponseList.get(position);
+            final Blog blog = mBlogResponseList.get(position);
 
             if (blog.getCoverImgUrl() != null) {
                 Glide.with(itemView.getContext())

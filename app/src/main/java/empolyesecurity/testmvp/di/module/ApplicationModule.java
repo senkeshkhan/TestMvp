@@ -22,6 +22,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import empolyesecurity.testmvp.data.dp.AppDbHelper;
+import empolyesecurity.testmvp.data.dp.DbHelper;
 import empolyesecurity.testmvp.data.network.APIService;
 import empolyesecurity.testmvp.BuildConfig;
 import empolyesecurity.testmvp.MvpApp;
@@ -104,12 +106,11 @@ public class ApplicationModule {
     public ApiHelper provideApiService() {
         return ApiHelper.Factory.create(mApplication);
     }*/
-   /* @Provides
+    @Provides
     @Singleton
     DbHelper provideDbHelper(AppDbHelper appDbHelper) {
         return appDbHelper;
     }
-*/
     @Provides
     @Singleton
     PreferencesHelper providePreferencesHelper(AppPreferencesHelper appPreferencesHelper) {

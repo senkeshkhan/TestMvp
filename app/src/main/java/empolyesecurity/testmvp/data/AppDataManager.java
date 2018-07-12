@@ -18,13 +18,40 @@ package empolyesecurity.testmvp.data;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.internal.$Gson$Types;
+import com.google.gson.reflect.TypeToken;
+/*import empolyesecurity.testmvp.data.db.DbHelper;
+import com.mindorks.framework.mvp.data.db.model.Option;
+import com.mindorks.framework.mvp.data.db.model.Question;
+import com.mindorks.framework.mvp.data.db.model.User;
+import com.mindorks.framework.mvp.data.network.ApiHeader;
+import com.mindorks.framework.mvp.data.network.ApiHelper;
+import com.mindorks.framework.mvp.data.network.model.BlogResponse;
+import com.mindorks.framework.mvp.data.network.model.LoginRequest;
+import com.mindorks.framework.mvp.data.network.model.LoginResponse;
+import com.mindorks.framework.mvp.data.network.model.LogoutResponse;
+import com.mindorks.framework.mvp.data.network.model.OpenSourceResponse;
+import com.mindorks.framework.mvp.data.prefs.PreferencesHelper;
+import com.mindorks.framework.mvp.di.ApplicationContext;
+import com.mindorks.framework.mvp.utils.AppConstants;
+import com.mindorks.framework.mvp.utils.CommonUtils;*/
+
+import java.lang.reflect.Type;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-
+import empolyesecurity.testmvp.data.dp.DbHelper;
+import empolyesecurity.testmvp.data.dp.model.Option;
+import empolyesecurity.testmvp.data.dp.model.Question;
+import empolyesecurity.testmvp.data.dp.model.User;
 import empolyesecurity.testmvp.data.network.APIService;
 import empolyesecurity.testmvp.data.network.ApiHeader;
 import empolyesecurity.testmvp.data.network.ApiHelper;
+import empolyesecurity.testmvp.data.network.model.Blog;
 import empolyesecurity.testmvp.data.network.model.BlogResponse;
 import empolyesecurity.testmvp.data.network.model.LoginRequest;
 import empolyesecurity.testmvp.data.network.model.LoginResponse;
@@ -32,7 +59,11 @@ import empolyesecurity.testmvp.data.network.model.LogoutResponse;
 import empolyesecurity.testmvp.data.network.model.OpenSourceResponse;
 import empolyesecurity.testmvp.data.prefs.PreferencesHelper;
 import empolyesecurity.testmvp.di.ApplicationContext;
+import empolyesecurity.testmvp.utils.AppConstants;
+import empolyesecurity.testmvp.utils.CommonUtils;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 /**
  * Created by janisharali on 27/01/17.
@@ -44,15 +75,15 @@ public class AppDataManager implements DataManager {
     private static final String TAG = "AppDataManager";
 
     private final Context mContext;
-  //  private final DbHelper mDbHelper;
+   private final DbHelper mDbHelper;
     private final PreferencesHelper mPreferencesHelper;
     private final ApiHelper mApiHelper;
     private final APIService mAPIService;
 
     @Inject
-    public AppDataManager(@ApplicationContext Context context, PreferencesHelper preferencesHelper,ApiHelper apiHelper,APIService apiService) {
+    public AppDataManager(@ApplicationContext Context context , DbHelper dbHelper, PreferencesHelper preferencesHelper, ApiHelper apiHelper, APIService apiService) {
         mContext = context;
-       // mDbHelper = dbHelper;
+        mDbHelper = dbHelper;
         mPreferencesHelper = preferencesHelper;
         mApiHelper = apiHelper;
         mAPIService = apiService;
@@ -73,17 +104,27 @@ public class AppDataManager implements DataManager {
         mPreferencesHelper.setAccessToken(accessToken);
         mApiHelper.getApiHeader().getProtectedApiHeader().setAccessToken(accessToken);
     }
-   /* @Override
-    public Observable<Long> insertUser(User user) {
-        return mDbHelper.insertUser(user);
-    }*/
 
-  /*  @Override
+
+    @Override
     public Observable<List<User>> getAllUsers() {
         return mDbHelper.getAllUsers();
-    }*/
+    }
+    @Override
+    public Observable<Long> insertUser(User user) {
+        return mDbHelper.insertUser(user);
+    }
 
+    @Override
+    public Observable<Boolean> insertBlog(List<Blog> blogList) {
+        System.out.println("1111111111111111"+blogList.size());
+        return mDbHelper.insertBlog(blogList);
+    }
 
+    @Override
+    public Observable<List<Blog>> getAllBlog() {
+        return mDbHelper.getAllBlog();
+    }
     @Override
     public Observable<LoginResponse> doGoogleLoginApiCall(LoginRequest.GoogleLoginRequest
                                                                   request) {
@@ -198,44 +239,40 @@ public class AppDataManager implements DataManager {
                 null);
     }
 
-   /* @Override
+    @Override
     public Observable<Boolean> isQuestionEmpty() {
         return mDbHelper.isQuestionEmpty();
-    }*/
+    }
 
-/*
     @Override
     public Observable<Boolean> isOptionEmpty() {
         return mDbHelper.isOptionEmpty();
     }
-*/
 
-   /* @Override
+     @Override
     public Observable<Boolean> saveQuestion(Question question) {
         return mDbHelper.saveQuestion(question);
     }
-*/
-    /*@Override
+
+    @Override
     public Observable<Boolean> saveOption(Option option) {
         return mDbHelper.saveOption(option);
-    }*/
+    }
 
-  /*  @Override
+    @Override
     public Observable<Boolean> saveQuestionList(List<Question> questionList) {
         return mDbHelper.saveQuestionList(questionList);
     }
-*/
-    /*@Override
+    @Override
     public Observable<Boolean> saveOptionList(List<Option> optionList) {
         return mDbHelper.saveOptionList(optionList);
-    }*/
+    }
 
-   /* @Override
+    @Override
     public Observable<List<Question>> getAllQuestions() {
         return mDbHelper.getAllQuestions();
     }
-*/
-   /* @Override
+    @Override
     public Observable<Boolean> seedDatabaseQuestions() {
 
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
@@ -261,7 +298,6 @@ public class AppDataManager implements DataManager {
                     }
                 });
     }
-*//*
     @Override
     public Observable<Boolean> seedDatabaseOptions() {
 
@@ -282,12 +318,43 @@ public class AppDataManager implements DataManager {
                                             AppConstants.SEED_DATABASE_OPTIONS),
                                     type);
 
-                           // return saveOptionList(optionList);
+                            return saveOptionList(optionList);
+                        }
+                        return Observable.just(false);
+                    }
+                });
+    }
+
+/*
+    @Override
+    public Observable<Boolean> seedDatabaseOption() {
+
+        GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
+        final Gson gson = builder.create();
+
+        return mDbHelper.isOptionEmpty()
+                .concatMap(new Function<Boolean, ObservableSource<? extends Boolean>>() {
+                    @Override
+                    public ObservableSource<? extends Boolean> apply(Boolean isEmpty)
+                            throws Exception {
+                        if (isEmpty) {
+                            Type type = new TypeToken<List<Option>>() {
+                            }
+                                    .getType();
+                            List<Option> optionList = gson.fromJson(
+                                    CommonUtils.loadJSONFromAsset(mContext,
+                                            AppConstants.SEED_DATABASE_OPTIONS),
+                                    type);
+
+                            return saveOptionList(optionList);
                         }
                         return Observable.just(false);
                     }
                 });
     }*/
+
+
+
 
     @Override
     public Observable<BlogResponse> getBlogApiCall() {

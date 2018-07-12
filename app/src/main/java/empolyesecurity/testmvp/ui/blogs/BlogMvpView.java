@@ -20,6 +20,7 @@ package empolyesecurity.testmvp.ui.blogs;
 
 import java.util.List;
 
+import empolyesecurity.testmvp.data.network.model.Blog;
 import empolyesecurity.testmvp.data.network.model.BlogResponse;
 import empolyesecurity.testmvp.ui.base.MvpView;
 
@@ -30,6 +31,8 @@ import empolyesecurity.testmvp.ui.base.MvpView;
 
 public interface BlogMvpView extends MvpView {
 
-    void updateBlog(List<BlogResponse.Blog> blogList);
+    void updateBlog(List<Blog> blogList);
     //void showForecast(BlogResponse forecast);
+
+    void blogDp(List<Blog> questionList);
 }

@@ -21,23 +21,30 @@ package empolyesecurity.testmvp.data;
 
 
 //import empolyesecurity.testmvp.data.db.DbHelper;
+
+import empolyesecurity.testmvp.data.dp.DbHelper;
 import empolyesecurity.testmvp.data.network.APIService;
 import empolyesecurity.testmvp.data.network.ApiHelper;
 import empolyesecurity.testmvp.data.prefs.PreferencesHelper;
-
+import io.reactivex.Observable;
 /**
  * Created by janisharali on 27/01/17.
  */
 
-public interface DataManager extends ApiHelper,PreferencesHelper,APIService {
+public interface DataManager extends DbHelper,ApiHelper,PreferencesHelper,APIService {
 
     void updateApiHeader(Long userId, String accessToken);
 
     void setUserAsLoggedOut();
 
-   // Observable<Boolean> seedDatabaseQuestions();
+    Observable<Boolean> seedDatabaseQuestions();
 
-  //  Observable<Boolean> seedDatabaseOptions();
+    Observable<Boolean> seedDatabaseOptions();
+
+    //Observable<Boolean>  seedDatabaseOption();
+
+
+
 
     void updateUserInfo(
             String accessToken,

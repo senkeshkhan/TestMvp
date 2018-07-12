@@ -26,6 +26,7 @@ public interface BlogMvpPresenter<V extends BlogMvpView>
         extends MvpPresenter<V> {
 
     void onViewPrepared();
+    void onBlogDb();
 }
 
 

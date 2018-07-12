@@ -18,6 +18,11 @@ package empolyesecurity.testmvp.data.network.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Property;
+
 import java.util.List;
 
 /**
@@ -82,31 +87,44 @@ public class BlogResponse {
         result = 31 * result + data.hashCode();
         return result;
     }
+    /*@Entity(nameInDb = "blog")
+    public  class Blog {
 
-    public static class Blog {
+
+        @Expose
+        @SerializedName("id")
+        @Id(autoincrement = true)
+        private Long id;
+
 
         @Expose
         @SerializedName("blog_url")
+        @Property(nameInDb = "blog_url")
         private String blogUrl;
 
         @Expose
         @SerializedName("img_url")
+        @Property(nameInDb = "img_url")
         private String coverImgUrl;
 
         @Expose
         @SerializedName("title")
+        @Property(nameInDb = "title")
         private String title;
 
         @Expose
         @SerializedName("description")
+        @Property(nameInDb = "description")
         private String description;
 
         @Expose
         @SerializedName("author")
+        @Property(nameInDb = "author")
         private String author;
 
         @Expose
         @SerializedName("published_at")
+        @Property(nameInDb = "published_at")
         private String date;
 
         public String getBlogUrl() {
@@ -157,6 +175,15 @@ public class BlogResponse {
             this.date = date;
         }
 
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -183,5 +210,5 @@ public class BlogResponse {
             result = 31 * result + date.hashCode();
             return result;
         }
-    }
+    }*/
 }

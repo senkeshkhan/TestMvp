@@ -29,6 +29,7 @@ import butterknife.OnClick;
 import empolyesecurity.testmvp.MainActivity;
 import empolyesecurity.testmvp.R;
 import empolyesecurity.testmvp.ui.base.BaseActivity;
+import empolyesecurity.testmvp.ui.blogs.BlogActivity;
 
 
 /**
@@ -86,7 +87,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @Override
     public void openMainActivity() {
-        Intent intent = MainActivity.getStartIntent(LoginActivity.this);
+        Intent intent = BlogActivity.getStartIntent(LoginActivity.this);
         startActivity(intent);
         finish();
     }

@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.splash.SplashActivity">
+        <activity android:name=".ui.blogs.BlogActivity"
+            android:theme="@style/AppThemeNoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +24,7 @@
         <activity android:name=".MainActivity"
             android:theme="@style/AppThemeNoActionBar"></activity>
         <activity android:name=".ui.login.LoginActivity"></activity>
-        <activity android:name=".ui.blogs.BlogActivity"
+        <activity android:name=".ui.splash.SplashActivity"
             android:theme="@style/AppThemeNoActionBar"></activity>
 
     </application>
